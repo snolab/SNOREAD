@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         雪阅模式|SNOREAD
 // @namespace    https://userscript.snomiao.com/
-// @version      1.0(20200713)
+// @version      1.1(20200714)
 // @description  【雪阅模式|SNOREAD】像读报纸一样纵览这个世界吧！豪华广角宽屏视角 / 刷知乎神器 / 2D排版 / 快速提升视觉维度 / 横向滚动阅读模式 / 翻页模式 / 充分利用屏幕空间 / 快阅速读插件 / 雪阅模式  / 宽屏必备 / 带鱼屏专属 | 使用说明：按 Escape 退出雪阅模式 | 【欢迎加入QQ群交流 1043957595 或 官方TG群组 https://t.me/snoread 】
 // @author       snomiao@gmail.com
 // @match        https://www.zhihu.com/*
@@ -14,6 +14,8 @@
 // ==/UserScript==
 //
 // 更新内容：
+// (20200714)优化节流防抖、后台性能、滚动性能等
+// (20200713)升级UI，提升知乎页面兼容性
 // (20200430)修复文字溢出问题
 // (20200428)更新文案
 // (20200413)调整横向滚动速率
@@ -86,6 +88,13 @@ https://www.jd.com/
     开始()
 })();
 
+
+////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+
 (function () {
     'use strict';
     'esversion: 6';
@@ -98,35 +107,6 @@ https://www.jd.com/
         return Object.assign(e.children[0], 属性)
     }
     const 睡 = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-    const 节流防抖化 = (函数, 间隔 = 1000) => {
-        // 本函数的作用是结合节流和防抖的特性，只保留间隔内的首次和末次调用
-        // 执行示意（比如间隔 4 字符）
-        // 外部调用
-        // ----!--!!!!!!-!---------!----
-        // 内部调用
-        // ----!-------------!-----!----
-        let 冷却中 = false
-        let 时钟号 = null
-        const 冷却开始 = () => {
-            冷却中 = true
-            时钟号 = setTimeout(() => { 冷却中 = false }, 间隔);
-        }
-        return (...参数) => new Promise((resolve, _) => {
-            const 现在时间 = +new Date()
-            // 若本次是首次触发，则直接执行
-            if (!冷却中) {
-                resolve(函数(...参数))
-                冷却开始()
-            } else {
-                // 若短时间再次触发则进入防抖
-                if (时钟号 !== null) clearTimeout(时钟号);
-                时钟号 = setTimeout(() => {
-                    resolve(函数(...参数))
-                    冷却开始()
-                }, 间隔);
-            }
-        })
-    }
     const 取窗口高 = () => document.body.parentElement.clientHeight;
     const 取窗口宽 = () => document.body.parentElement.clientWidth;
 
@@ -212,7 +192,7 @@ div#main-wrapper:after, .clearfix:after {
 }
 /* 知乎侧边推送精准置底 */
 /* https://www.zhihu.com/ */
-.Question-sideColumn,ContentLayout-sideColumn{
+.Question-sideColumn,.ContentLayout-sideColumn{
     z-index: 0;
 }
 
@@ -403,24 +383,60 @@ div#main-wrapper:after, .clearfix:after {
         正在扫描并转换文章树 = 0
         window.SNOREAD_observer && window.SNOREAD_observer.observe(document.querySelector('body'), { childList: true, subtree: true });
     }
-    const 开始 = 节流防抖化(文章树扫描并转换, 1000)
 
-    const 用户意向退出雪阅模式 = () => {
-        用户意向_雪阅模式 = false;
-        开始()
+    
+    const 节流防抖化 = (函数, 间隔 = 1000) => {
+        // 本函数的作用是结合节流和防抖的特性，只保留间隔内的首次和末次调用
+        // 执行示意（比如间隔 4 字符）
+        // 外部调用
+        // ----!--!!!!!!-!---------!----
+        // 内部调用
+        // ----!-------------!-----!----
+        let 冷却中 = false
+        let 时钟号 = null
+        const 冷却开始 = () => {
+            冷却中 = true
+            时钟号 = setTimeout(() => { 冷却中 = false }, 间隔);
+        }
+        return (...参数) => new Promise((resolve, _) => {
+            const 现在时间 = +new Date()
+            // 若本次是首次触发，则直接执行
+            if (!冷却中) {
+                resolve(函数(...参数))
+                冷却开始()
+            } else {
+                // 若短时间再次触发则进入防抖
+                if (时钟号 !== null) clearTimeout(时钟号);
+                时钟号 = setTimeout(() => {
+                    resolve(函数(...参数))
+                    冷却开始()
+                }, 间隔);
+            }
+        })
     }
+    const 页面可见时才运行化 = (函数) => async (...参) => {
+        if(document.hidden) return;
+        return await 函数(...参)
+    }
+    const 开始 = 页面可见时才运行化(节流防抖化(文章树扫描并转换, 1000))
+
     // 窗口载入
     window.addEventListener('load', 开始, false)
     // 页面大小变化
     window.addEventListener("resize", 开始, false)
-    // 若 DOM 出现5个元素以上的改变，自动重新识别
     window.SNOREAD_observer = new MutationObserver(function (mutations, observe) {
         开始()
     });
     SNOREAD_observer.observe(document.querySelector('body'), { childList: true, subtree: true });
 
-    window.addEventListener("keydown", e => e.code == "Escape" && 用户意向退出雪阅模式())
-
     console.info("[雪阅] 加载完成");
     开始()
+
+
+    const 用户意向退出雪阅模式 = () => {
+        用户意向_雪阅模式 = false;
+        开始()
+    }
+    window.addEventListener("keydown", e => e.code == "Escape" && 用户意向退出雪阅模式())
+
 })();
