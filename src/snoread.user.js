@@ -212,7 +212,7 @@ div#main-wrapper:after, .clearfix:after {
 }
 /* 知乎侧边推送精准置底 */
 /* https://www.zhihu.com/ */
-.Question-sideColumn{
+.Question-sideColumn,ContentLayout-sideColumn{
     z-index: 0;
 }
 
