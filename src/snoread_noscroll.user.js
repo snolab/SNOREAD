@@ -11,7 +11,10 @@
 // @exclude      https://*.taobao.com/*
 // @grant        none
 // ==/UserScript==
-
+//
+// (20200715)脚本作者snomiao正在寻找一份可远程的工作。
+// 意向技术栈：nodejs、typescript 相关。联系方式 snomiao@gmail.com
+// 
 (function () {
     'use strict';
     'esversion: 6';
@@ -357,3 +360,4 @@ div#main-wrapper:after, .clearfix:after {
     window.addEventListener("keydown", e => e.code == "Escape" && 用户意向退出雪阅模式())
 
 })();
+// 雪星今天也要努力活下去吖！

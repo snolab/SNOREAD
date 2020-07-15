@@ -13,6 +13,10 @@
 // @grant        none
 // ==/UserScript==
 //
+// (20200715)脚本作者snomiao正在寻找一份可远程的工作。
+// 意向技术栈：nodejs、typescript 相关。联系方式 snomiao@gmail.com
+// 
+//
 // 更新内容：
 // (20200714)优化节流防抖、后台性能、滚动性能等
 // (20200713)升级UI，提升知乎页面兼容性
@@ -440,3 +444,4 @@ div#main-wrapper:after, .clearfix:after {
     window.addEventListener("keydown", e => e.code == "Escape" && 用户意向退出雪阅模式())
 
 })();
+// 雪星今天也要努力活下去吖！
