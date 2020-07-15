@@ -12,7 +12,7 @@
 // @grant        none
 // ==/UserScript==
 //
-// (20200715)脚本作者snomiao正在寻找一份可远程的工作。
+// (20200715)脚本作者snomiao正在寻找一份可远程的工作，现坐标上海。
 // 意向技术栈：nodejs、typescript 相关。联系方式 snomiao@gmail.com
 // 
 (function () {
