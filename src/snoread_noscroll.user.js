@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         雪阅模式|SNOREAD （无滚动版）
 // @namespace    https://userscript.snomiao.com/
-// @version      1.1(20200714)
+// @version      1.2(20200717)
 // @description  【原版滚动有问题的请用这个版本】【雪阅模式|SNOREAD】像读报纸一样纵览这个世界吧！豪华广角宽屏视角 / 刷知乎神器 / 2D排版 / 快速提升视觉维度 / 横向滚动阅读模式 / 翻页模式 / 充分利用屏幕空间 / 快阅速读插件 / 雪阅模式 / 宽屏必备 / 带鱼屏专属 | 使用说明：按 Escape 退出雪阅模式 | 【欢迎加入QQ群交流 1043957595 或 官方TG群组 https://t.me/snoread 】
 // @author       snomiao@gmail.com
 // @match        http://*/*
