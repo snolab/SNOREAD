@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         雪阅模式|SNOREAD
 // @namespace    https://userscript.snomiao.com/
-// @version      1.1(20200714)
+// @version      1.2(20200717)
 // @description  【雪阅模式|SNOREAD】像读报纸一样纵览这个世界吧！豪华广角宽屏视角 / 刷知乎神器 / 2D排版 / 快速提升视觉维度 / 横向滚动阅读模式 / 翻页模式 / 充分利用屏幕空间 / 快阅速读插件 / 雪阅模式  / 宽屏必备 / 带鱼屏专属 | 使用说明：按 Escape 退出雪阅模式 | 【欢迎加入QQ群交流 1043957595 或 官方TG群组 https://t.me/snoread 】
 // @author       snomiao@gmail.com
 // @match        https://www.zhihu.com/*
@@ -13,11 +13,12 @@
 // @grant        none
 // ==/UserScript==
 //
-// (20200715)脚本作者snomiao正在寻找一份可远程的工作，现坐标上海。
+// (20200717)脚本作者snomiao正在寻找一份可远程的工作，现坐标上海。
 // 意向技术栈：nodejs、typescript 相关。联系方式 snomiao@gmail.com
 // 
 //
-// 更新内容：
+// 更新记录：
+// (20200717)排除tbody
 // (20200714)优化节流防抖、后台性能、滚动性能等
 // (20200713)升级UI，提升知乎页面兼容性
 // (20200430)修复文字溢出问题
@@ -47,7 +48,7 @@ https://www.jd.com/
     'use strict';
     const 滚动监听 = e => {
         // 排除几种不太可能发生滚动的无素提高性能
-        if ('A|P|TD|TR'.match(e.tagName)) return;
+        if ( e.tagName in ['A','P','TD','TR'] ) return;
         [...e.children].map(滚动监听)
         if (e.标记_已监听横向滚动) return;
         e.标记_已监听横向滚动 = true;
@@ -334,9 +335,9 @@ div#main-wrapper:after, .clearfix:after {
         var 子元素高于屏 = 子元素.filter(e => 取元素投影高(e) > 窗口高)
         var 主要的子元素 = 子元素高于屏.filter(e => 取元素投影高(e) / 元素外高 > 0.5)
 
-        var 元素宽度占比过小 = 元素.clientWidth < 窗口宽 * 0.90
-        var 正确的元素类型 = !['IMG', 'PRE'].includes(元素.tagName)
-        var 是文章 = !主要的子元素.length && 元素宽度占比过小 && 子元素.length >= 3 && 正确的元素类型
+        var 元素宽度占比够小 = 元素.clientWidth < 窗口宽 * 0.95
+        var 正确的元素类型 = !['IMG', 'PRE', 'TBODY'].includes(元素.tagName)
+        var 是文章 = !主要的子元素.length && 元素宽度占比够小 && 子元素.length >= 3 && 正确的元素类型
 
         var 子树列 = 子元素高于屏.map(e => 取文章树(e, 层数 + 1)) || []
 

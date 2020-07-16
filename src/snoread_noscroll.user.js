@@ -12,9 +12,11 @@
 // @grant        none
 // ==/UserScript==
 //
-// (20200715)脚本作者snomiao正在寻找一份可远程的工作，现坐标上海。
+// (20200717)脚本作者snomiao正在寻找一份可远程的工作，现坐标上海。
 // 意向技术栈：nodejs、typescript 相关。联系方式 snomiao@gmail.com
 // 
+
+
 (function () {
     'use strict';
     'esversion: 6';
@@ -250,9 +252,9 @@ div#main-wrapper:after, .clearfix:after {
         var 子元素高于屏 = 子元素.filter(e => 取元素投影高(e) > 窗口高)
         var 主要的子元素 = 子元素高于屏.filter(e => 取元素投影高(e) / 元素外高 > 0.5)
 
-        var 元素宽度占比过小 = 元素.clientWidth < 窗口宽 * 0.90
-        var 正确的元素类型 = !['IMG', 'PRE'].includes(元素.tagName)
-        var 是文章 = !主要的子元素.length && 元素宽度占比过小 && 子元素.length >= 3 && 正确的元素类型
+        var 元素宽度占比够小 = 元素.clientWidth < 窗口宽 * 0.95
+        var 正确的元素类型 = !['IMG', 'PRE', 'TBODY'].includes(元素.tagName)
+        var 是文章 = !主要的子元素.length && 元素宽度占比够小 && 子元素.length >= 3 && 正确的元素类型
 
         var 子树列 = 子元素高于屏.map(e => 取文章树(e, 层数 + 1)) || []
 
