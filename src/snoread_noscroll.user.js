@@ -127,7 +127,7 @@ div#main-wrapper:after, .clearfix:after {
         // 点击定位到文章
         元素.addEventListener("click", function (事件) {
             // console.debug("点击元素", 元素)
-            元素.scrollIntoViewIfNeeded()
+            (元素.scrollIntoViewIfNeeded || 元素.scrollIntoView || (() => null))()
             // 元素.classList.contains("snomiao-article") &&
             //     进入雪阅模式(元素)
         }, false);
