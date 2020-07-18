@@ -2,7 +2,7 @@
 
 像小时候读报纸一样：自动重排长篇文章，以每行大约32字符宽度进行重新分栏排版，变为 分栏+横向滚动式显示。
 
-Lang: [English](./README.md) | __[简体中文](./README_zh-CN.md)__
+Lang: [English](./README_en.md) | __[简体中文](./README_zh-CN.md)__
 
 ## 安装
 接下来，请开始体验吧！

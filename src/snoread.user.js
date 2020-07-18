@@ -48,7 +48,7 @@ https://www.jd.com/
     'use strict';
     const 滚动监听 = e => {
         // 排除几种不太可能发生滚动的无素提高性能
-        if ( e.tagName in ['A','P','TD','TR'] ) return;
+        if (e.tagName in ['A', 'P', 'TD', 'TR']) return;
         [...e.children].map(滚动监听)
         if (e.标记_已监听横向滚动) return;
         e.标记_已监听横向滚动 = true;
@@ -204,15 +204,12 @@ div#main-wrapper:after, .clearfix:after {
 </style>`;
     }
 
-    const 监听点击 = 元素 => {
+    const 点击定位到文章监听 = 元素 => {
         if (元素.标记_点击切换雪阅模式) return;
         元素.标记_点击切换雪阅模式 = true
         // 点击定位到文章
         元素.addEventListener("click", function (事件) {
-            // console.debug("点击元素", 元素)
-            元素.scrollIntoViewIfNeeded()
-            // 元素.classList.contains("snomiao-article") &&
-            //     进入雪阅模式(元素)
+            (元素.scrollIntoViewIfNeeded || 元素.scrollIntoView || (() => null))()
         }, false);
     }
     const 元素可见性修复解除 = (元素) => {
@@ -255,7 +252,7 @@ div#main-wrapper:after, .clearfix:after {
     const 进入雪阅模式 = (元素) => {
         退出雪阅模式(元素)
         window.snomiao_article = 元素
-        监听点击(元素)
+        点击定位到文章监听(元素)
         元素可见性修复(元素);
         // 为了对齐
         内含文本节点向段落替换(元素)
@@ -389,7 +386,7 @@ div#main-wrapper:after, .clearfix:after {
         window.SNOREAD_observer && window.SNOREAD_observer.observe(document.querySelector('body'), { childList: true, subtree: true });
     }
 
-    
+
     const 节流防抖化 = (函数, 间隔 = 1000) => {
         // 本函数的作用是结合节流和防抖的特性，只保留间隔内的首次和末次调用
         // 执行示意（比如间隔 4 字符）
@@ -420,7 +417,7 @@ div#main-wrapper:after, .clearfix:after {
         })
     }
     const 页面可见时才运行化 = (函数) => async (...参) => {
-        if(document.hidden) return;
+        if (document.hidden) return;
         return await 函数(...参)
     }
     const 开始 = 页面可见时才运行化(节流防抖化(文章树扫描并转换, 1000))
