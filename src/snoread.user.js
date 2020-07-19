@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         雪阅模式|SNOREAD
 // @namespace    https://userscript.snomiao.com/
-// @version      1.2(20200719)
+// @version      1.3(20200719)
 // @description  【雪阅模式|SNOREAD】像读报纸一样纵览这个世界吧！豪华广角宽屏视角 / 刷知乎神器 / 2D排版 / 快速提升视觉维度 / 横向滚动阅读模式 / 翻页模式 / 充分利用屏幕空间 / 快阅速读插件 / 雪阅模式  / 宽屏必备 / 带鱼屏专属 | 使用说明：按 Escape 退出雪阅模式 | 【欢迎加入QQ群交流 1043957595 或 官方TG群组 https://t.me/snoread 】
 // @author       snomiao@gmail.com
 // @match        https://www.zhihu.com/*
@@ -18,6 +18,7 @@
 // 
 //
 // 更新记录：
+// (20200719)修复scroll into view 在firefox上的兼容问题
 // (20200717)排除tbody
 // (20200714)优化节流防抖、后台性能、滚动性能等
 // (20200713)升级UI，提升知乎页面兼容性
@@ -60,8 +61,8 @@ https://www.jd.com/
             const scrolled_x = (e.scrollLeft != (e.scrollLeft += dx, e.scrollLeft))
             if (scrolled_x) {
                 // 若需定位则撤销滚动
-                const 当前Y = e.getBoundingClientRect().y
-                e.scrollIntoViewIfNeeded()
+                (e.scrollIntoViewIfNeeded || e.scrollIntoView)();
+                const 当前Y = e.getBoundingClientRect().y;
                 if (e.getBoundingClientRect().y != 当前Y)
                     e.scrollLeft -= dx;
                 //
@@ -72,8 +73,8 @@ https://www.jd.com/
             const dy = scrollRate * e.clientHeight * 0.5
             const scrolled_y = (e.scrollTop != (e.scrollTop += dy, e.scrollTop))
             if (scrolled_y) {
-                const 当前X = e.getBoundingClientRect().x
-                e.scrollIntoViewIfNeeded()
+                (e.scrollIntoViewIfNeeded || e.scrollIntoView)();
+                const 当前X = e.getBoundingClientRect().x;
                 if (e.getBoundingClientRect().x != 当前X)
                     e.scrollTop -= dy;
                 //
@@ -298,17 +299,17 @@ div#main-wrapper:after, .clearfix:after {
     const 文章树取元素 = (文章树) => [文章树.元素, ...(文章树.子树列 && 文章树.子树列.map(文章树取元素) || [])]
     const 元素包含判断 = (父元素, 子孙元素) => 父元素.contains(子孙元素)
     const 检测重叠冲突 = (文章树) => {
-        var 窗口高 = 取窗口高(),
+        const 窗口高 = 取窗口高(),
             窗口宽 = 取窗口宽()
-        var 元素列 = 文章树取元素(文章树).flat(Infinity)
-        var 文章列 = 排序按(取元素投影顶)(元素列.filter(e => e.标记_是文章))
-        var 相邻对列 = 取相邻对(文章列).map(对 => (对.距离 = 取距离按(取元素投影顶)(...对), 对))
-        var 异常对列 = 相邻对列.filter(对 => 对.距离 < 窗口高)
-        var 冲突元素列 = 异常对列.map(异常对 => 排序按(取元素面积)(异常对))
+        const 元素列 = 文章树取元素(文章树).flat(Infinity)
+        const 文章列 = 排序按(取元素投影顶)(元素列.filter(e => e.标记_是文章))
+        const 相邻对列 = 取相邻对(文章列).map(对 => (对.距离 = 取距离按(取元素投影顶)(...对), 对))
+        const 异常对列 = 相邻对列.filter(对 => 对.距离 < 窗口高)
+        const 冲突元素列 = 异常对列.map(异常对 => 排序按(取元素面积)(异常对))
         冲突元素列.forEach(([弱势元素, 强势元素]) => {
             // 若子元素与父元素冲突，则子元素不算弱势；换句话说，若弱势元素为强势元素的子元素，则强弱关系互换
             if (元素包含判断(强势元素, 弱势元素)) {
-                var tmp = 弱势元素
+                const tmp = 弱势元素
                 弱势元素 = 强势元素
                 强势元素 = tmp
             }
@@ -322,23 +323,23 @@ div#main-wrapper:after, .clearfix:after {
             }
         })
     }
-    var 取文章树 = (元素, 层数 = 0) => {
-        var 窗口高 = 取窗口高(),
+    const 取文章树 = (元素, 层数 = 0) => {
+        const 窗口高 = 取窗口高(),
             窗口宽 = 取窗口宽();
 
-        var 元素外高 = 取元素投影高(元素);
+        const 元素外高 = 取元素投影高(元素);
+        
+        const 子元素 = [...元素.children]
+        const 子元素高于屏 = 子元素.filter(e => 取元素投影高(e) > 窗口高)
+        const 主要的子元素 = 子元素高于屏.filter(e => 取元素投影高(e) / 元素外高 > 0.5)
 
-        var 子元素 = [...元素.children]
-        var 子元素高于屏 = 子元素.filter(e => 取元素投影高(e) > 窗口高)
-        var 主要的子元素 = 子元素高于屏.filter(e => 取元素投影高(e) / 元素外高 > 0.5)
+        const 元素宽度占比够小 = 元素.clientWidth < 窗口宽 * 0.95
+        const 正确的元素类型 = !['IMG', 'PRE', 'TBODY'].includes(元素.tagName)
+        const 是文章 = !主要的子元素.length && 元素宽度占比够小 && 子元素.length >= 3 && 正确的元素类型
 
-        var 元素宽度占比够小 = 元素.clientWidth < 窗口宽 * 0.95
-        var 正确的元素类型 = !['IMG', 'PRE', 'TBODY'].includes(元素.tagName)
-        var 是文章 = !主要的子元素.length && 元素宽度占比够小 && 子元素.length >= 3 && 正确的元素类型
+        const 子树列 = 子元素高于屏.map(e => 取文章树(e, 层数 + 1)) || []
 
-        var 子树列 = 子元素高于屏.map(e => 取文章树(e, 层数 + 1)) || []
-
-        var 占比 = 取元素投影高(元素) / 取元素投影高(元素.parentElement)
+        const 占比 = 取元素投影高(元素) / 取元素投影高(元素.parentElement)
         元素.标记_是文章 = 是文章
 
         if (DEBUG_SNOREAD) {

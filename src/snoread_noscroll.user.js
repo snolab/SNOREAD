@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         雪阅模式|SNOREAD （无滚动版）
 // @namespace    https://userscript.snomiao.com/
-// @version      1.2(20200717)
+// @version      1.3(20200719)
 // @description  【原版滚动有问题的请用这个版本】【雪阅模式|SNOREAD】像读报纸一样纵览这个世界吧！豪华广角宽屏视角 / 刷知乎神器 / 2D排版 / 快速提升视觉维度 / 横向滚动阅读模式 / 翻页模式 / 充分利用屏幕空间 / 快阅速读插件 / 雪阅模式 / 宽屏必备 / 带鱼屏专属 | 使用说明：按 Escape 退出雪阅模式 | 【欢迎加入QQ群交流 1043957595 或 官方TG群组 https://t.me/snoread 】
 // @author       snomiao@gmail.com
 // @match        http://*/*
@@ -15,7 +15,6 @@
 // (20200717)脚本作者snomiao正在寻找一份可远程的工作，现坐标上海。
 // 意向技术栈：nodejs、typescript 相关。联系方式 snomiao@gmail.com
 // 
-
 
 (function () {
     'use strict';
@@ -121,15 +120,12 @@ div#main-wrapper:after, .clearfix:after {
 </style>`;
     }
 
-    const 监听点击 = 元素 => {
+    const 点击定位到文章监听 = 元素 => {
         if (元素.标记_点击切换雪阅模式) return;
         元素.标记_点击切换雪阅模式 = true
         // 点击定位到文章
         元素.addEventListener("click", function (事件) {
-            // console.debug("点击元素", 元素)
             (元素.scrollIntoViewIfNeeded || 元素.scrollIntoView || (() => null))()
-            // 元素.classList.contains("snomiao-article") &&
-            //     进入雪阅模式(元素)
         }, false);
     }
     const 元素可见性修复解除 = (元素) => {
@@ -172,7 +168,7 @@ div#main-wrapper:after, .clearfix:after {
     const 进入雪阅模式 = (元素) => {
         退出雪阅模式(元素)
         window.snomiao_article = 元素
-        监听点击(元素)
+        点击定位到文章监听(元素)
         元素可见性修复(元素);
         // 为了对齐
         内含文本节点向段落替换(元素)
@@ -218,17 +214,17 @@ div#main-wrapper:after, .clearfix:after {
     const 文章树取元素 = (文章树) => [文章树.元素, ...(文章树.子树列 && 文章树.子树列.map(文章树取元素) || [])]
     const 元素包含判断 = (父元素, 子孙元素) => 父元素.contains(子孙元素)
     const 检测重叠冲突 = (文章树) => {
-        var 窗口高 = 取窗口高(),
+        const 窗口高 = 取窗口高(),
             窗口宽 = 取窗口宽()
-        var 元素列 = 文章树取元素(文章树).flat(Infinity)
-        var 文章列 = 排序按(取元素投影顶)(元素列.filter(e => e.标记_是文章))
-        var 相邻对列 = 取相邻对(文章列).map(对 => (对.距离 = 取距离按(取元素投影顶)(...对), 对))
-        var 异常对列 = 相邻对列.filter(对 => 对.距离 < 窗口高)
-        var 冲突元素列 = 异常对列.map(异常对 => 排序按(取元素面积)(异常对))
+        const 元素列 = 文章树取元素(文章树).flat(Infinity)
+        const 文章列 = 排序按(取元素投影顶)(元素列.filter(e => e.标记_是文章))
+        const 相邻对列 = 取相邻对(文章列).map(对 => (对.距离 = 取距离按(取元素投影顶)(...对), 对))
+        const 异常对列 = 相邻对列.filter(对 => 对.距离 < 窗口高)
+        const 冲突元素列 = 异常对列.map(异常对 => 排序按(取元素面积)(异常对))
         冲突元素列.forEach(([弱势元素, 强势元素]) => {
             // 若子元素与父元素冲突，则子元素不算弱势；换句话说，若弱势元素为强势元素的子元素，则强弱关系互换
             if (元素包含判断(强势元素, 弱势元素)) {
-                var tmp = 弱势元素
+                const tmp = 弱势元素
                 弱势元素 = 强势元素
                 强势元素 = tmp
             }
@@ -242,23 +238,23 @@ div#main-wrapper:after, .clearfix:after {
             }
         })
     }
-    var 取文章树 = (元素, 层数 = 0) => {
-        var 窗口高 = 取窗口高(),
+    const 取文章树 = (元素, 层数 = 0) => {
+        const 窗口高 = 取窗口高(),
             窗口宽 = 取窗口宽();
 
-        var 元素外高 = 取元素投影高(元素);
+        const 元素外高 = 取元素投影高(元素);
+        
+        const 子元素 = [...元素.children]
+        const 子元素高于屏 = 子元素.filter(e => 取元素投影高(e) > 窗口高)
+        const 主要的子元素 = 子元素高于屏.filter(e => 取元素投影高(e) / 元素外高 > 0.5)
 
-        var 子元素 = [...元素.children]
-        var 子元素高于屏 = 子元素.filter(e => 取元素投影高(e) > 窗口高)
-        var 主要的子元素 = 子元素高于屏.filter(e => 取元素投影高(e) / 元素外高 > 0.5)
+        const 元素宽度占比够小 = 元素.clientWidth < 窗口宽 * 0.95
+        const 正确的元素类型 = !['IMG', 'PRE', 'TBODY'].includes(元素.tagName)
+        const 是文章 = !主要的子元素.length && 元素宽度占比够小 && 子元素.length >= 3 && 正确的元素类型
 
-        var 元素宽度占比够小 = 元素.clientWidth < 窗口宽 * 0.95
-        var 正确的元素类型 = !['IMG', 'PRE', 'TBODY'].includes(元素.tagName)
-        var 是文章 = !主要的子元素.length && 元素宽度占比够小 && 子元素.length >= 3 && 正确的元素类型
+        const 子树列 = 子元素高于屏.map(e => 取文章树(e, 层数 + 1)) || []
 
-        var 子树列 = 子元素高于屏.map(e => 取文章树(e, 层数 + 1)) || []
-
-        var 占比 = 取元素投影高(元素) / 取元素投影高(元素.parentElement)
+        const 占比 = 取元素投影高(元素) / 取元素投影高(元素.parentElement)
         元素.标记_是文章 = 是文章
 
         if (DEBUG_SNOREAD) {
@@ -306,7 +302,7 @@ div#main-wrapper:after, .clearfix:after {
         window.SNOREAD_observer && window.SNOREAD_observer.observe(document.querySelector('body'), { childList: true, subtree: true });
     }
 
-    
+
     const 节流防抖化 = (函数, 间隔 = 1000) => {
         // 本函数的作用是结合节流和防抖的特性，只保留间隔内的首次和末次调用
         // 执行示意（比如间隔 4 字符）
@@ -337,7 +333,7 @@ div#main-wrapper:after, .clearfix:after {
         })
     }
     const 页面可见时才运行化 = (函数) => async (...参) => {
-        if(document.hidden) return;
+        if (document.hidden) return;
         return await 函数(...参)
     }
     const 开始 = 页面可见时才运行化(节流防抖化(文章树扫描并转换, 1000))
