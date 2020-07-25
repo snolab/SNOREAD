@@ -125,7 +125,7 @@ div#main-wrapper:after, .clearfix:after {
         元素.标记_点击切换雪阅模式 = true
         // 点击定位到文章
         元素.addEventListener("click", function (事件) {
-            (元素.scrollIntoViewIfNeeded || 元素.scrollIntoView || (() => null))()
+            (元素.scrollIntoViewIfNeeded || 元素.scrollIntoView).call(e)
         }, false);
     }
     const 元素可见性修复解除 = (元素) => {
