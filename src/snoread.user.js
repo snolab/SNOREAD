@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         雪阅模式|SNOREAD
 // @namespace    https://userscript.snomiao.com/
-// @version      1.3(20200719)
-// @description  【雪阅模式|SNOREAD】像读报纸一样纵览这个世界吧！豪华广角宽屏视角 / 刷知乎神器 / 2D排版 / 快速提升视觉维度 / 横向滚动阅读模式 / 翻页模式 / 充分利用屏幕空间 / 快阅速读插件 / 雪阅模式  / 宽屏必备 / 带鱼屏专属 | 使用说明：按 Escape 退出雪阅模式 | 【欢迎加入QQ群交流 1043957595 或 官方TG群组 https://t.me/snoread 】
+// @version      1.4.1
+// @description  (20200725)【雪阅模式|SNOREAD】像读报纸一样纵览这个世界吧！豪华广角宽屏视角 / 刷知乎神器 / 2D排版 / 快速提升视觉维度 / 横向滚动阅读模式 / 翻页模式 / 充分利用屏幕空间 / 快阅速读插件 / 雪阅模式  / 宽屏必备 / 带鱼屏专属 | 使用说明：按 Escape 退出雪阅模式 | 【欢迎加入QQ群交流 1043957595 或 官方TG群组 https://t.me/snoread 】
 // @author       snomiao@gmail.com
 // @match        https://www.zhihu.com/*
 // @match        http://*/*
@@ -18,7 +18,7 @@
 // 
 //
 // 更新记录：
-// (20200719)修复scroll into view 在firefox上的兼容问题
+// (20200719)(20200725)修复scroll into view 在firefox上的兼容问题
 // (20200717)排除tbody
 // (20200714)优化节流防抖、后台性能、滚动性能等
 // (20200713)升级UI，提升知乎页面兼容性
@@ -61,7 +61,7 @@ https://www.jd.com/
             const scrolled_x = (e.scrollLeft != (e.scrollLeft += dx, e.scrollLeft))
             if (scrolled_x) {
                 // 若需定位则撤销滚动
-                (e.scrollIntoViewIfNeeded || e.scrollIntoView)();
+                (e.scrollIntoViewIfNeeded || e.scrollIntoView).call(e);
                 const 当前Y = e.getBoundingClientRect().y;
                 if (e.getBoundingClientRect().y != 当前Y)
                     e.scrollLeft -= dx;
@@ -73,7 +73,7 @@ https://www.jd.com/
             const dy = scrollRate * e.clientHeight * 0.5
             const scrolled_y = (e.scrollTop != (e.scrollTop += dy, e.scrollTop))
             if (scrolled_y) {
-                (e.scrollIntoViewIfNeeded || e.scrollIntoView)();
+                (e.scrollIntoViewIfNeeded || e.scrollIntoView).call(e);
                 const 当前X = e.getBoundingClientRect().x;
                 if (e.getBoundingClientRect().x != 当前X)
                     e.scrollTop -= dy;
