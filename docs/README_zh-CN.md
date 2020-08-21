@@ -10,7 +10,7 @@ Lang: [English](./README_en.md) | __[简体中文](./README_zh-CN.md)__
 
 发布地址：
 - Greasy Fork （推荐，最新版） https://greasyfork.org/zh-CN/scripts/392213-%E9%9B%AA%E9%98%85%E6%A8%A1%E5%BC%8F-snoread
-- Chrome 应用商店（版本较旧） https://chrome.google.com/webstore/detail/snoread/bdklagnoakmjndjdnfgfimgailecicjo
+- Chrome 应用商店（版本较旧）  https://chrome.google.com/webstore/detail/snoread/bdklagnoakmjndjdnfgfimgailecicjo
 
 ## 插件介绍
 
@@ -45,6 +45,14 @@ Lang: [English](./README_en.md) | __[简体中文](./README_zh-CN.md)__
 | ![知乎_BEFORE](知乎：BEFORE%20SNOREAD.png) | ![知乎_AFTER](知乎：AFTER%20SNOREAD.png) | 
 | ![Google_BEFORE](Google：BEFORE%20SNOREAD.png) | ![Google_AFTER](Google：AFTER%20SNOREAD.png)|
 | ![京东_BEFORE](京东：BEFORE%20SNOREAD.png) | ![京东_AFTER](京东：AFTER%20SNOREAD.png) |
+
+## 发展
+
+TODO:
+- [ ] 雪阅切换控制按钮
+- [ ] 自动生成文章目录
+- [ ] 一键摘抄分享文章内容
+- [ ] 翻页热键
 
 ## 支持与协作
 
