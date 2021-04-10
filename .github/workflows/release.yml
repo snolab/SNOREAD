@@ -23,7 +23,7 @@ jobs:
           draft: false
           prerelease: false
       - name: Upload Release Asset
-        id: upload-release-asset
+        id: upload-release-asset-zip
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -33,7 +33,7 @@ jobs:
           asset_name: SNOREAD.zip
           asset_content_type: application/zip
       - name: Upload Release Asset
-        id: upload-release-asset
+        id: upload-release-asset-crx
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
