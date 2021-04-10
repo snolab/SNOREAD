@@ -1,3 +1,13 @@
+## [1.0.3](https://github.com/snomiao/SNOREAD/compare/v1.0.2...v1.0.3) (2021-04-10)
+
+
+### Bug Fixes
+
+* ignore dist ([cf9bf8b](https://github.com/snomiao/SNOREAD/commit/cf9bf8b440c2974651c748ac810a3aae8aa2b185))
+* remove output ([a09fa99](https://github.com/snomiao/SNOREAD/commit/a09fa996cdc8a0ef95f64fe86eb6c39e041fddea))
+
+
+
 ## [1.0.2](https://github.com/snomiao/SNOREAD/compare/v1.0.1...v1.0.2) (2021-04-10)
 
 
