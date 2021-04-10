@@ -1,3 +1,14 @@
+## [1.0.5](https://github.com/snomiao/SNOREAD/compare/v1.0.4...v1.0.5) (2021-04-10)
+
+
+### Bug Fixes
+
+* add script: build+patch ([0b53489](https://github.com/snomiao/SNOREAD/commit/0b53489b53458214f379afcb7ab75ed76dece3d7))
+* build both zip and crx ([7c5e014](https://github.com/snomiao/SNOREAD/commit/7c5e014d34f7096226dc43967a60a13a03c0f931))
+* change extension filename to upper case ([3228a1f](https://github.com/snomiao/SNOREAD/commit/3228a1f3f887bba5bb0de2110255f568a1f2f17b))
+
+
+
 ## [1.0.4](https://github.com/snomiao/SNOREAD/compare/v1.0.3...v1.0.4) (2021-04-10)
 
 
