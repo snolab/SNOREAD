@@ -1,3 +1,12 @@
+## [1.0.2](https://github.com/snomiao/SNOREAD/compare/v1.0.1...v1.0.2) (2021-04-10)
+
+
+### Bug Fixes
+
+* correct workflows name ([2012cca](https://github.com/snomiao/SNOREAD/commit/2012cca0529a9abb5ab78f063a1306edc94418a8))
+
+
+
 ## 1.0.1 (2021-04-10)
 
 
