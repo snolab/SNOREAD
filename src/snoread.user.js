@@ -14,10 +14,6 @@
 // @grant        none
 // ==/UserScript==
 //
-// (20200717)脚本作者snomiao正在寻找一份可远程的工作，现坐标上海。
-// 意向技术栈：nodejs、typescript 相关。联系方式 snomiao@gmail.com
-// 
-//
 // 更新记录：
 // (20200726)修复scroll into view 在firefox上的兼容问题
 // (20200717)排除tbody
