@@ -1,3 +1,12 @@
+## [1.0.6](https://github.com/snomiao/SNOREAD/compare/v1.0.5...v1.0.6) (2021-04-10)
+
+
+### Bug Fixes
+
+* upload both zip crx ([1c081af](https://github.com/snomiao/SNOREAD/commit/1c081af68174e5a83c21c067b9b7a8000cf85d73))
+
+
+
 ## [1.0.5](https://github.com/snomiao/SNOREAD/compare/v1.0.4...v1.0.5) (2021-04-10)
 
 
