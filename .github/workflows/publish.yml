@@ -5,7 +5,7 @@ on:
     tags:
       - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
 jobs:
-  Release:
+  github-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -42,3 +42,11 @@ jobs:
           asset_path: ./SNOREAD.zip
           asset_name: SNOREAD.crx
           asset_content_type: application/zip
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10
+          registry-url: https://registry.npmjs.org/
+      - run: npm i -g github-release-from-changelog
+      - run: github-release-from-changelog
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
