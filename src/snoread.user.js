@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         雪阅模式|SNOREAD
 // @namespace    https://userscript.snomiao.com/
-// @version      1.4.1
+// @version      1.4.2
 // @description  (20200725)【雪阅模式|SNOREAD】像读报纸一样纵览这个世界吧！豪华广角宽屏视角 / 刷知乎神器 / 2D排版 / 快速提升视觉维度 / 横向滚动阅读模式 / 翻页模式 / 充分利用屏幕空间 / 快阅速读插件 / 雪阅模式  / 宽屏必备 / 带鱼屏专属 | 使用说明：按 Escape 退出雪阅模式 | 【欢迎加入QQ群交流 1043957595 或 官方TG群组 https://t.me/snoread 】
 // @author       snomiao@gmail.com
 // @match        https://www.zhihu.com/*
@@ -10,14 +10,9 @@
 // @exclude      https://*.taobao.com/*
 // @exclude      https://*.1688.com/*
 // @exclude      https://*.tmall.com/*
-// @exclude      https://*.tv/*
-// @exclude      https://*.bilibili.com/*
+// @supportURL   https://github.com/snomiao/SNOREAD
 // @grant        none
 // ==/UserScript==
-//
-// (20200717)脚本作者snomiao正在寻找一份可远程的工作，现坐标上海。
-// 意向技术栈：nodejs、typescript 相关。联系方式 snomiao@gmail.com
-//
 //
 // 更新记录：
 // (20200726)修复scroll into view 在firefox上的兼容问题
@@ -273,8 +268,7 @@ div#main-wrapper:after, .clearfix:after {
         元素.标记_点击定位到文章监听 = true
         // 点击定位到文章
         元素.addEventListener("click", function (事件) {
-            (元素.scrollIntoViewIfNeeded || 元素.scrollIntoView
-                || ((e) => console.error('[雪阅] 无法滚动到元素', e))).call(元素)
+            (元素.scrollIntoViewIfNeeded || 元素.scrollIntoView).call(元素)
         }, false);
     }
     const 元素可见性修复 = (元素) => {
@@ -408,12 +402,11 @@ div#main-wrapper:after, .clearfix:after {
         //
         const 窗口高 = 取窗口高(), 窗口宽 = 取窗口宽();
         const 元素外高 = 取元素投影高(元素);
-        const 子元素列 = [...元素.children]
-        const 高于屏的子元素列 = 子元素列.filter(e => 取元素投影高(e) > 窗口高)
-        //
-        const 主要的子元素 = 高于屏的子元素列.filter(e => 取元素投影高(e) / 元素外高 > 0.5)
-        const 没有过大的元素 = !主要的子元素.length
-        //
+
+        const 子元素 = [...元素.children]
+        const 子元素高于屏 = 子元素.filter(e => 取元素投影高(e) > 窗口高)
+        const 主要的子元素 = 子元素高于屏.filter(e => 取元素投影高(e) / 元素外高 > 0.5)
+
         const 元素宽度占比够小 = 元素.clientWidth < 窗口宽 * 0.95
         const 子元素数量够多 = 子元素列.length >= 3
         //
@@ -424,7 +417,8 @@ div#main-wrapper:after, .clearfix:after {
         const 占比 = 取元素投影高(元素) / 取元素投影高(元素.parentElement)
         //
         元素.雪阅标记_是文章 = 是文章
-        if (DEBUG_SNOREAD) {R
+        if (DEBUG_SNOREAD) {
+            R
             元素.setAttribute("len子元素", 子元素列.length)
             元素.setAttribute("len子元素高于屏", 高于屏的子元素列.length)
             元素.setAttribute("len主要的子元素", 主要的子元素.length)
