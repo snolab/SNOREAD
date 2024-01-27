@@ -1,3 +1,15 @@
+## [1.0.9](https://github.com/snomiao/SNOREAD/compare/v1.0.8...v1.0.9) (2024-01-27)
+
+
+### Bug Fixes
+
+* **master:** manifest bumper ([2420606](https://github.com/snomiao/SNOREAD/commit/24206061908891ff04493c44bdb363d7d3cd994f))
+* **master:** release script ([3ffda14](https://github.com/snomiao/SNOREAD/commit/3ffda14359573b6f76e1ca3fd952100644a89ae0))
+* **master:** version 1.1.1 ([4a6deb3](https://github.com/snomiao/SNOREAD/commit/4a6deb38f76d1b3b009414e42a74ce7fffed62b1))
+* **master:** version script ([c23214c](https://github.com/snomiao/SNOREAD/commit/c23214ce015b5266f3733d39e2fd578e8f63e293))
+
+
+
 ## [1.0.8](https://github.com/snomiao/SNOREAD/compare/v1.0.7...v1.0.8) (2024-01-27)
 
 
