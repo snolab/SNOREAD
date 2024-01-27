@@ -1,3 +1,14 @@
+## [1.0.8](https://github.com/snomiao/SNOREAD/compare/v1.0.7...v1.0.8) (2024-01-27)
+
+
+### Bug Fixes
+
+* add github-release-from-changelog ([c115cb6](https://github.com/snomiao/SNOREAD/commit/c115cb66ef1e5efa6f1c16477c265ec118488513))
+* **docs:** en ([ce2e80a](https://github.com/snomiao/SNOREAD/commit/ce2e80a7294ffe36b67a3f3724528dae4155eac2))
+* **master:** remove actvie tab permission ([c3e0185](https://github.com/snomiao/SNOREAD/commit/c3e0185f5bc3907ea73be0924e147f3b6b447f24))
+
+
+
 ## [1.0.7](https://github.com/snomiao/SNOREAD/compare/v1.0.6...v1.0.7) (2021-04-10)
 
 
