@@ -44,7 +44,7 @@ jobs:
           asset_content_type: application/zip
       - uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 20
           registry-url: https://registry.npmjs.org/
       - run: npm i -g github-release-from-changelog
       - run: github-release-from-changelog
