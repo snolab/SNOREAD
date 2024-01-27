@@ -6,9 +6,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "build": "npx -y json-bump src/manifest.json",
     "release": "npm version patch",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
+    "version": "npx -y json-bump src/manifest.json && conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "postversion": "git push --follow-tags",
     "prepublishOnly": "npm run build"
   },
