@@ -4,10 +4,10 @@
     "manifest_version": 2,
     "description": "Read more, wider and deeper.",
     "icons": {
-        "128": "SNOREAD.png"
+        "128": "snoread.png"
     },
     "browser_action": {
-        "default_icon": "SNOREAD.png"
+        "default_icon": "snoread.png"
     },
     "content_scripts": [
         {
