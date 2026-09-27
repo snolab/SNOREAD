@@ -1,0 +1,36 @@
+# Every 3 hours, check the Chrome Web Store review of the version in src/manifest.json.
+# Opens one issue (mentioning @snomiao) when it is approved or rejected.
+on:
+    schedule:
+        - cron: "17 */3 * * *"
+    workflow_dispatch:
+name: Web Store review watch
+permissions:
+    contents: read
+    issues: write
+jobs:
+    review-watch:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+            - id: review
+              run: echo "result=$(node scripts/chrome-web-store.mjs --review)" >> "$GITHUB_OUTPUT"
+              env:
+                  CWS_SERVICE_ACCOUNT_KEY: ${{ secrets.CWS_SERVICE_ACCOUNT_KEY }}
+            - run: echo "$RESULT"
+              env:
+                  RESULT: ${{ steps.review.outputs.result }}
+            - if: ${{ !startsWith(steps.review.outputs.result, 'pending') }}
+              env:
+                  GH_TOKEN: ${{ github.token }}
+                  RESULT: ${{ steps.review.outputs.result }}
+              run: |
+                  set -- $RESULT
+                  title="Chrome Web Store: $2 $1"
+                  found=$(gh issue list --state all --search "\"$title\" in:title" --json number -q length)
+                  if [ "$found" = 0 ]; then
+                      gh issue create --title "$title" --body "@snomiao The Chrome Web Store review of version $2 finished: $1. Status line: $RESULT"
+                  fi

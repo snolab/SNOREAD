@@ -66,6 +66,16 @@ if (process.argv.includes("--submit")) {
 }
 
 const { version } = JSON.parse(await readFile("src/manifest.json", "utf8"));
+
+// One line for the review-watch workflow: approved|rejected|pending <version> <submitted state>
+if (process.argv.includes("--review")) {
+    const s = await call(token, `${API}:fetchStatus`);
+    const published = s.publishedItemRevisionStatus?.distributionChannels?.[0]?.crxVersion;
+    const submitted = s.submittedItemRevisionStatus?.state ?? "-";
+    const result = published === version ? "approved" : /REJECT/.test(submitted) ? "rejected" : "pending";
+    console.log(`${result} ${version} ${submitted}${s.takenDown ? " takenDown" : ""}`);
+    process.exit(0);
+}
 console.log(`uploading ${ZIP} (version ${version})`);
 
 let upload = await call(token, UPLOAD, { method: "POST", body: await readFile(ZIP) });
