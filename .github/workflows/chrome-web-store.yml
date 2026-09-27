@@ -1,0 +1,27 @@
+# Build the extension and upload it to the Chrome Web Store (item bdklagnoakmjndjdnfgfimgailecicjo).
+# Needs the manifest version bumped past the store's current one.
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      args:
+        description: "chrome-web-store.mjs flags: --status, --no-publish, or empty to submit"
+        default: "--status"
+name: Chrome Web Store
+jobs:
+  chrome-web-store:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: python scripts/build.py
+      - run: node scripts/chrome-web-store.mjs ${{ inputs.args }}
+        env:
+          CWS_SERVICE_ACCOUNT_KEY: ${{ secrets.CWS_SERVICE_ACCOUNT_KEY }}

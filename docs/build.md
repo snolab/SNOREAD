@@ -20,3 +20,17 @@ for Manifest V3: they contain no extension API calls, background pages,
 remote JavaScript, eval, or inline scripts. DOM style insertion and DOM
 event listeners remain in the content script; no extra permissions or
 service worker are needed.
+
+## Chrome Web Store upload
+
+`.github/workflows/chrome-web-store.yml` builds the ZIP and runs
+`scripts/chrome-web-store.mjs` on `v*` tags, which uploads it and submits it
+for review. Run it by hand from Actions → Chrome Web Store with `--status`
+(read-only) or `--no-publish` (upload a draft without submitting).
+
+It authenticates as the service account
+`tomato-life-cws@snomiao.iam.gserviceaccount.com` (gcloud project `snomiao`),
+which is registered on the publisher's Account page. Its JSON key is the repo
+secret `CWS_SERVICE_ACCOUNT_KEY` (key ID
+`abafa86b9b3b1879cf6acda9fd96e2d2e2e0234e`). The API can only update this
+existing item, not create a new one.
