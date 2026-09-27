@@ -35,3 +35,5 @@ which is registered on the publisher's Account page. Its JSON key is the repo
 secret `CWS_SERVICE_ACCOUNT_KEY` (key ID
 `abafa86b9b3b1879cf6acda9fd96e2d2e2e0234e`). The API can only update this
 existing item, not create a new one.
+
+Submission history and item links: [CHROME-WEB-STORE.md](CHROME-WEB-STORE.md).
