@@ -26,7 +26,8 @@ service worker are needed.
 `.github/workflows/chrome-web-store.yml` builds the ZIP and runs
 `scripts/chrome-web-store.mjs` on `v*` tags, which uploads it and submits it
 for review. Run it by hand from Actions → Chrome Web Store with `--status`
-(read-only) or `--no-publish` (upload a draft without submitting).
+(read-only) or `--no-publish` (upload a draft without submitting), and `--submit` to submit an
+already-uploaded draft for review.
 
 It authenticates as the service account
 `tomato-life-cws@snomiao.iam.gserviceaccount.com` (gcloud project `snomiao`),

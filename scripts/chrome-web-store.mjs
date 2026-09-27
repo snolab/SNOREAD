@@ -4,6 +4,7 @@
 //   node scripts/chrome-web-store.mjs              upload and submit for review
 //   node scripts/chrome-web-store.mjs --no-publish upload only (stays a draft)
 //   node scripts/chrome-web-store.mjs --status     print the item's status, change nothing
+//   node scripts/chrome-web-store.mjs --submit     submit the already-uploaded draft for review
 //
 // Auth: CWS_SERVICE_ACCOUNT_KEY (the service account's JSON key), or CWS_ACCESS_TOKEN.
 // The service account tomato-life-cws@snomiao.iam.gserviceaccount.com is registered
@@ -56,6 +57,11 @@ const token = await accessToken();
 
 if (process.argv.includes("--status")) {
     console.log("status:", JSON.stringify(await call(token, `${API}:fetchStatus`), null, 2));
+    process.exit(0);
+}
+
+if (process.argv.includes("--submit")) {
+    console.log("publish:", JSON.stringify(await call(token, `${API}:publish`, { method: "POST" })));
     process.exit(0);
 }
 

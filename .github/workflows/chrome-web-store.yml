@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       args:
-        description: "chrome-web-store.mjs flags: --status, --no-publish, or empty to submit"
+        description: "chrome-web-store.mjs flags: --status, --no-publish, --submit (draft only), or empty to upload and submit"
         default: "--status"
 name: Chrome Web Store
 jobs:
