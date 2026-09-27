@@ -9,9 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build project # This would actually build your project, using zip for an example artifact
-        run: |
-          zip -r SNOREAD.zip src/
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Build extension
+        run: python scripts/build.py
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -29,18 +31,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ./SNOREAD.zip
+          asset_path: ./dist/SNOREAD_CHROME_EXTENSION.zip
           asset_name: SNOREAD.zip
-          asset_content_type: application/zip
-      - name: Upload Release Asset
-        id: upload-release-asset-crx
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ./SNOREAD.zip
-          asset_name: SNOREAD.crx
           asset_content_type: application/zip
       - uses: actions/setup-node@v1
         with:
