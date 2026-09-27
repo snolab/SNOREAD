@@ -33,3 +33,7 @@ State after submitting:
 | Published | 1.1.2 | `PUBLISHED`, `takenDown: true` |
 
 Open: whether the takedown clears on approval or needs an appeal on the dashboard.
+
+## Review watch
+
+`.github/workflows/review-watch.yml` runs every 3 hours (and by hand from Actions → Web Store review watch). It runs `node scripts/chrome-web-store.mjs --review` and, once the result is `approved` (the published version equals `src/manifest.json`'s) or `rejected`, opens one issue titled `Chrome Web Store: <version> <result>` that mentions @snomiao. First run on 2026-09-27: `pending 1.1.4 PENDING_REVIEW takenDown`. If approval leaves `takenDown` set, the issue's status line will show it.
